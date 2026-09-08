@@ -1,0 +1,12 @@
+package org.hm.event;
+
+@Service
+public class StockService {
+@KafkaListener(topics = "orders")
+public void consume(OrderCreatedEvent event) {
+
+    System.out.println(
+        "Réservation du stock pour "
+        + event.orderId());
+}
+}
