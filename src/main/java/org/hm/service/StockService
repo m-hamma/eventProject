@@ -1,12 +1,26 @@
 package org.hm.event;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
+
 @Service
 public class StockService {
-@KafkaListener(topics = "orders")
-public void consume(OrderCreatedEvent event) {
 
-    System.out.println(
-        "Réservation du stock pour "
-        + event.orderId());
-}
+    private static final Logger log =
+            LoggerFactory.getLogger(StockService.class);
+
+    @EventListener
+    public void consume(OrderCreatedEvent event) {
+
+        log.info("=== Début StockService ===");
+
+        log.info(
+                "Réservation du stock pour la commande {}",
+                event.orderId()
+        );
+
+        log.info("=== Fin StockService ===");
+    }
 }
