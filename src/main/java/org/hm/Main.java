@@ -20,7 +20,7 @@ public class Main {
     CommandLineRunner test(OrderService orderService) {
 
         return args -> {
-            Order order = new Order(1L, "Mohamed");
+            Order order = new Order(null, "ClientX");
             orderService.createOrder(order);
         };
     }
