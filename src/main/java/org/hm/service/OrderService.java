@@ -1,5 +1,6 @@
 package org.hm.service;
 
+import jakarta.transaction.Transactional;
 import org.hm.dto.Order;
 import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
@@ -12,15 +13,18 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@Transactional
 public class OrderService {
 
     private static final Logger log =
             LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher publisher;
-    private  final OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
 
     public OrderService(OrderRepository orderRepository, ApplicationEventPublisher publisher, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
@@ -39,7 +43,7 @@ public class OrderService {
         OrderEntity entity = orderMapper.toEntity(order);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setStatus(OrderStatus.CREATED.name());
-        OrderEntity saved=orderRepository.save(entity);
+        OrderEntity saved = orderRepository.save(entity);
 
         log.info(
                 "Commande {} enregistrée en base",
@@ -54,5 +58,22 @@ public class OrderService {
         );
 
         log.info("=== Fin OrderService ===");
+    }
+
+    public Order trouverOrdre(Long id) {
+        return orderMapper.toDto(
+                orderRepository.findById(id).get()
+        );
+    }
+
+    public List<Order> listOrders() {
+
+        List<Order> orders = new ArrayList<>();
+
+        orderRepository.findAll().forEach(order -> {
+            orders.add(orderMapper.toDto(order));
+        });
+
+        return orders;
     }
 }

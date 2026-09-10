@@ -16,13 +16,13 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
-    @Bean
-    CommandLineRunner test(OrderService orderService) {
-
-        return args -> {
-            Order order = new Order(null, "ClientX");
-            orderService.createOrder(order);
-        };
-    }
+//    @Bean
+//    CommandLineRunner test(OrderService orderService) {
+//
+//        return args -> {
+//            Order order = new Order(null, "ClientX");
+//            orderService.createOrder(order);
+//        };
+//    }
 
 }
