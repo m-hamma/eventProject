@@ -1,8 +1,10 @@
 package org.hm.controller.rest;
 
+import jakarta.validation.Valid;
 import org.hm.dto.Order;
 import org.hm.service.OrderService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestBody Order order) {
+    public void createOrder(@Valid @RequestBody Order order) {
         orderService.createOrder(order);
     }
 
@@ -31,6 +33,7 @@ public class OrderController {
     public Order getOrder(@PathVariable Long id) {
         return orderService.trouverOrdre(id);
     }
+
     @GetMapping
     public List<Order> listerOrders() {
         return orderService.listOrders();
