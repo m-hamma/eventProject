@@ -1,5 +1,6 @@
 package org.hm.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,5 +27,12 @@ public class ControllerAdviceRest {
                                 error.getDefaultMessage()));
 
         return errors;
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex) {
+
+        return "Impossible de supprimer cette commande car une facture lui est associée.";
     }
 }

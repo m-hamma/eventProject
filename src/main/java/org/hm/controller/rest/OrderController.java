@@ -43,4 +43,9 @@ public class OrderController {
     public String ping() {
         return "OK";
     }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+    }
 }

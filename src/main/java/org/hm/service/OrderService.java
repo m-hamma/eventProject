@@ -5,6 +5,7 @@ import org.hm.dto.Order;
 import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
 import org.hm.event.OrderCreatedEvent;
+import org.hm.exception.OrderNotFoundException;
 import org.hm.mapper.OrderMapper;
 import org.hm.repositories.OrderRepository;
 import org.slf4j.Logger;
@@ -75,5 +76,13 @@ public class OrderService {
         });
 
         return orders;
+    }
+    public void deleteOrder(Long id) {
+
+        if (!orderRepository.existsById(id)) {
+            throw new OrderNotFoundException(id);
+        }
+
+        orderRepository.deleteById(id);
     }
 }
