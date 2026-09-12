@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: eventdb
+      POSTGRES_USER: mohamed.hamma
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - eventproject_postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: . # Chemin vers le dossier contenant le Dockerfile Java
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ../eventProjectFront # Chemin vers le dossier contenant le Dockerfile Angular
+    ports:
+      - "4200:80" # On expose le port 80 de Nginx sur le port 4200 de votre machine
+    depends_on:
+      - backend
+
+volumes:
+  eventproject_postgres-data:
