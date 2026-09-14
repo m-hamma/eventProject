@@ -29,6 +29,14 @@ public class OrderController {
         orderService.createOrder(order);
     }
 
+    @PutMapping("/{id}")
+    public void updateOrder(
+            @PathVariable Long id,
+            @RequestBody Order order) {
+        orderService.updateOrder(id, order);
+    }
+
+
     @GetMapping("/{id}")
     public Order getOrder(@PathVariable Long id) {
         return orderService.trouverOrdre(id);
@@ -43,6 +51,7 @@ public class OrderController {
     public String ping() {
         return "OK";
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrder(@PathVariable Long id) {

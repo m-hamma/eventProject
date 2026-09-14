@@ -5,6 +5,7 @@ import org.hm.dto.Order;
 import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
 import org.hm.event.OrderCreatedEvent;
+import org.hm.event.OrderUpdatedEvent;
 import org.hm.exception.OrderNotFoundException;
 import org.hm.mapper.OrderMapper;
 import org.hm.repositories.OrderRepository;
@@ -84,5 +85,31 @@ public class OrderService {
         }
 
         orderRepository.deleteById(id);
+    }
+    public void updateOrder(Long id, Order order) {
+
+        log.info("=== Début Update Order ===");
+
+        OrderEntity entity = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new OrderNotFoundException(id));
+
+        entity.setCustomer(order.customer());
+        entity.setStatus(OrderStatus.CREATED.name());
+        OrderEntity updated = orderRepository.save(entity);
+
+        log.info(
+                "Commande {} mise à jour",
+                updated.getId()
+        );
+
+        publisher.publishEvent(
+                new OrderUpdatedEvent(
+                        updated.getId(),
+                        updated.getCustomer()
+                )
+        );
+
+        log.info("=== Fin Update Order ===");
     }
 }

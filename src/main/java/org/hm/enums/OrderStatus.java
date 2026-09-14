@@ -2,6 +2,9 @@ package org.hm.enums;
 
 public enum OrderStatus {
     CREATED,
-    PROCESSING,
-    COMPLETED
+    CONFIRMED,
+    PREPARING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED;
 }
