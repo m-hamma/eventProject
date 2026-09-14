@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/db
+    username: mohamed.hamma
+    password: secret
+
+  sql:
+    init:
+      mode: always # OBLIGATOIRE : Dit à Spring d'exécuter le fichier schema.sql
+
+  jpa:
+    hibernate:
+      ddl-auto: none # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
+    show-sql: true
+
+server:
+  port: 8080
