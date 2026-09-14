@@ -13,6 +13,8 @@ services:
       - eventproject_postgres-data:/var/lib/postgresql/data
 
   backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     build:
       context: .
     ports:
