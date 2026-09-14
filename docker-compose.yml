@@ -14,7 +14,7 @@ services:
 
   backend:
     build:
-      context: . # Chemin vers le dossier contenant le Dockerfile Java
+      context: .
     ports:
       - "8080:8080"
     depends_on:
@@ -22,11 +22,21 @@ services:
 
   frontend:
     build:
-      context: ../eventProjectFront # Chemin vers le dossier contenant le Dockerfile Angular
+      context: ../eventProjectFront
     ports:
-      - "4200:80" # On expose le port 80 de Nginx sur le port 4200 de votre machine
+      - "4200:80"
     depends_on:
       - backend
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - db
 
 volumes:
   eventproject_postgres-data:
