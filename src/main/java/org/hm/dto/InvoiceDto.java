@@ -1,6 +1,6 @@
 package org.hm.dto;
 
-public record Invoice(
+public record InvoiceDto(
         Long id,
         Long orderId,
         String invoiceNumber

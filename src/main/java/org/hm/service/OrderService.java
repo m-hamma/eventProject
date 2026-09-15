@@ -1,7 +1,7 @@
 package org.hm.service;
 
 import jakarta.transaction.Transactional;
-import org.hm.dto.Order;
+import org.hm.dto.OrderDto;
 import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
 import org.hm.event.OrderCreatedEvent;
@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,17 +23,22 @@ public class OrderService {
 
     private static final Logger log =
             LoggerFactory.getLogger(OrderService.class);
+
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher publisher;
     private final OrderMapper orderMapper;
 
-    public OrderService(OrderRepository orderRepository, ApplicationEventPublisher publisher, OrderMapper orderMapper) {
+    public OrderService(
+            OrderRepository orderRepository,
+            ApplicationEventPublisher publisher,
+            OrderMapper orderMapper) {
+
         this.orderRepository = orderRepository;
         this.publisher = publisher;
         this.orderMapper = orderMapper;
     }
 
-    public void createOrder(Order order) {
+    public void createOrder(OrderDto order) {
 
         log.info("=== Début OrderService ===");
 
@@ -42,9 +46,16 @@ public class OrderService {
                 "Création d'une commande pour le client {}",
                 order.customer()
         );
+
         OrderEntity entity = orderMapper.toEntity(order);
-        entity.setCreatedAt(LocalDateTime.now());
-        entity.setStatus(OrderStatus.CREATED.name());
+
+        initCreation(entity);
+
+        if (entity.getItems() != null) {
+            entity.getItems().forEach(item ->
+                    item.setOrder(entity));
+        }
+
         OrderEntity saved = orderRepository.save(entity);
 
         log.info(
@@ -55,29 +66,45 @@ public class OrderService {
         publisher.publishEvent(
                 new OrderCreatedEvent(
                         saved.getId(),
-                        order.customer()
+                        saved.getCustomer()
                 )
         );
 
         log.info("=== Fin OrderService ===");
     }
 
-    public Order trouverOrdre(Long id) {
+    private void initCreation(OrderEntity entity) {
+        entity.setCreatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setStatus(OrderStatus.CREATED);
+    }
+
+    private void updateFields(
+            OrderEntity entity,
+            OrderDto order) {
+
+        entity.setCustomer(order.customer());
+        entity.setDescription(order.description());
+        entity.setUpdatedAt(LocalDateTime.now());
+    }
+
+    public OrderDto trouverOrdre(Long id) {
+
         return orderMapper.toDto(
-                orderRepository.findById(id).get()
+                orderRepository.findById(id)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(id))
         );
     }
 
-    public List<Order> listOrders() {
+    public List<OrderDto> listOrders() {
 
-        List<Order> orders = new ArrayList<>();
-
-        orderRepository.findAll().forEach(order -> {
-            orders.add(orderMapper.toDto(order));
-        });
-
-        return orders;
+        return orderRepository.findAll()
+                .stream()
+                .map(orderMapper::toDto)
+                .toList();
     }
+
     public void deleteOrder(Long id) {
 
         if (!orderRepository.existsById(id)) {
@@ -86,30 +113,33 @@ public class OrderService {
 
         orderRepository.deleteById(id);
     }
-    public void updateOrder(Long id, Order order) {
 
-        log.info("=== Début Update Order ===");
+    public void updateOrder(Long id, OrderDto order) {
 
         OrderEntity entity = orderRepository.findById(id)
                 .orElseThrow(() ->
                         new OrderNotFoundException(id));
 
-        entity.setCustomer(order.customer());
-        entity.setStatus(OrderStatus.CREATED.name());
-        OrderEntity updated = orderRepository.save(entity);
+        updateFields(entity, order);
+        entity.getItems().clear();
+        updateItems(entity, order);
 
-        log.info(
-                "Commande {} mise à jour",
-                updated.getId()
-        );
+        orderRepository.save(entity);
+    }
+    private void updateItems(
+            OrderEntity entity,
+            OrderDto order) {
 
-        publisher.publishEvent(
-                new OrderUpdatedEvent(
-                        updated.getId(),
-                        updated.getCustomer()
-                )
-        );
+        entity.getItems().clear();
 
-        log.info("=== Fin Update Order ===");
+        OrderEntity dtoEntity = orderMapper.toEntity(order);
+
+        if (dtoEntity.getItems() != null) {
+
+            dtoEntity.getItems().forEach(item -> {
+                item.setOrder(entity);
+                entity.getItems().add(item);
+            });
+        }
     }
 }

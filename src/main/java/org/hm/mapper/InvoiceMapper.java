@@ -1,6 +1,6 @@
 package org.hm.mapper;
 
-import org.hm.dto.Invoice;
+import org.hm.dto.InvoiceDto;
 import org.hm.entities.InvoiceEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 public interface InvoiceMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "order", ignore = true)
-    InvoiceEntity toEntity(Invoice invoice);
+    InvoiceEntity toEntity(InvoiceDto invoice);
 
     @Mapping(target = "orderId", source = "order.id")
-    Invoice toDto(InvoiceEntity entity);
+    InvoiceDto toDto(InvoiceEntity entity);
 }

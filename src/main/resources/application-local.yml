@@ -1,6 +1,8 @@
 spring:
+  application:
+    name: eventProject-local
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://localhost:5432/eventdb
     username: mohamed.hamma
     password: secret
 
@@ -10,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
+      ddl-auto: update # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
     show-sql: true
 
 server:

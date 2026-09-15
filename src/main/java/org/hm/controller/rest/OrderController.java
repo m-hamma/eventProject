@@ -1,7 +1,7 @@
 package org.hm.controller.rest;
 
 import jakarta.validation.Valid;
-import org.hm.dto.Order;
+import org.hm.dto.OrderDto;
 import org.hm.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -25,25 +25,26 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@Valid @RequestBody Order order) {
+    public void createOrder(@Valid @RequestBody OrderDto order) {
         orderService.createOrder(order);
     }
+
 
     @PutMapping("/{id}")
     public void updateOrder(
             @PathVariable Long id,
-            @RequestBody Order order) {
+            @RequestBody OrderDto order) {
         orderService.updateOrder(id, order);
     }
 
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id) {
+    public OrderDto getOrder(@PathVariable Long id) {
         return orderService.trouverOrdre(id);
     }
 
     @GetMapping
-    public List<Order> listerOrders() {
+    public List<OrderDto> listerOrders() {
         return orderService.listOrders();
     }
 
