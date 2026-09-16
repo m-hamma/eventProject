@@ -40,6 +40,3 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (product_id)
     REFERENCES products(id)
     );
-
-ALTER TABLE order_items
-DROP COLUMN IF EXISTS product;
