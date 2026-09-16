@@ -4,7 +4,6 @@ import org.hm.dto.OrderItemDto;
 import org.hm.entities.OrderItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
 @Mapper(componentModel = "spring")
 public interface OrderItemMapper {
 
