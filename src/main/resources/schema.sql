@@ -43,4 +43,3 @@ CREATE TABLE IF NOT EXISTS order_items (
 
 ALTER TABLE order_items
 DROP COLUMN IF EXISTS product;
-``
