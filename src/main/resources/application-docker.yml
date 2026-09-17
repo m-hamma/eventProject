@@ -1,4 +1,7 @@
 spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://db:5432/eventdb
     username: mohamed.hamma
@@ -12,6 +15,9 @@ spring:
     hibernate:
       ddl-auto: none # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
     show-sql: true
+  logging:
+    level:
+      org.flywaydb: DEBUG
 
 server:
   port: 8080

@@ -6,12 +6,14 @@ import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
 import org.hm.event.OrderCreatedEvent;
 import org.hm.event.OrderUpdatedEvent;
+import org.hm.exception.InvoiceAttachedException;
 import org.hm.exception.OrderNotFoundException;
 import org.hm.mapper.OrderMapper;
 import org.hm.repositories.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -105,13 +107,18 @@ public class OrderService {
                 .toList();
     }
 
+
     public void deleteOrder(Long id) {
 
         if (!orderRepository.existsById(id)) {
             throw new OrderNotFoundException(id);
         }
 
-        orderRepository.deleteById(id);
+        try {
+            orderRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new InvoiceAttachedException();
+        }
     }
 
     public void updateOrder(Long id, OrderDto order) {
@@ -126,6 +133,7 @@ public class OrderService {
 
         orderRepository.save(entity);
     }
+
     private void updateItems(
             OrderEntity entity,
             OrderDto order) {

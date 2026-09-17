@@ -36,6 +36,9 @@ public class OrderEntity {
     @Column(nullable = false)
     private OrderStatus status;
 
+    @Column(nullable = false, length = 255)
+    private String libelle;
+
     @OneToMany(
             mappedBy = "order",
             cascade = CascadeType.ALL,

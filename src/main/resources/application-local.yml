@@ -1,19 +1,25 @@
 spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
   application:
     name: eventProject-local
+
   datasource:
     url: jdbc:postgresql://localhost:5432/eventdb
     username: mohamed.hamma
     password: secret
 
-  sql:
-    init:
-      mode: always # OBLIGATOIRE : Dit à Spring d'exécuter le fichier schema.sql
-
   jpa:
     hibernate:
-      ddl-auto: update # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
+      ddl-auto: update
     show-sql: true
+
+logging:
+  level:
+    org.flywaydb: INFO
 
 server:
   port: 8080

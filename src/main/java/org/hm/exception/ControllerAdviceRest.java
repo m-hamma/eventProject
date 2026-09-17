@@ -33,6 +33,13 @@ public class ControllerAdviceRest {
     public String handleDataIntegrityViolationException(
             DataIntegrityViolationException ex) {
 
+        return ex.getMostSpecificCause().getMessage();
+    }
+    @ExceptionHandler(InvoiceAttachedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleInvoiceAttachedException(
+            InvoiceAttachedException ex) {
+
         return "Impossible de supprimer cette commande car une facture lui est associée.";
     }
 }

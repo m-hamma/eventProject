@@ -1,6 +1,15 @@
+CREATE TABLE IF NOT EXISTS clients (
+                         id BIGSERIAL PRIMARY KEY,
+                         code VARCHAR(50) NOT NULL UNIQUE,
+                         nom VARCHAR(255) NOT NULL,
+                         email VARCHAR(255),
+                         telephone VARCHAR(50)
+);
+
 CREATE TABLE IF NOT EXISTS orders (
                                       id BIGSERIAL PRIMARY KEY,
                                       customer VARCHAR(255) NOT NULL,
+    libelle VARCHAR(255),
     description VARCHAR(500),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
