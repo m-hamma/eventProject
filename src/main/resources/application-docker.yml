@@ -2,6 +2,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
   datasource:
     url: jdbc:postgresql://db:5432/eventdb
     username: mohamed.hamma
@@ -9,15 +10,16 @@ spring:
 
   sql:
     init:
-      mode: always # OBLIGATOIRE : Dit à Spring d'exécuter le fichier schema.sql
+      mode: never # Spring N'EXECUTE PAS schema.sql
 
   jpa:
     hibernate:
-      ddl-auto: none # OBLIGATOIRE : Empêche Hibernate d'écraser vos tables
+      ddl-auto: none
     show-sql: true
-  logging:
-    level:
-      org.flywaydb: DEBUG
+
+logging:
+  level:
+    org.flywaydb: DEBUG
 
 server:
   port: 8080

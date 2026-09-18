@@ -1,11 +1,21 @@
 package org.hm.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
-@Table(name = "invoices")
+@Table(
+        name = "invoices",
+        schema = "event"
+)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class InvoiceEntity {
 
     @Id
@@ -20,37 +30,4 @@ public class InvoiceEntity {
     @JoinColumn(name = "order_id")
     private OrderEntity order;
 
-    // getters/setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public OrderEntity getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderEntity order) {
-        this.order = order;
-    }
 }
