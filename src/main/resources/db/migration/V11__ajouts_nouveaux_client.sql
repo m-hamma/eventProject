@@ -1,0 +1,20 @@
+INSERT INTO referentiel.clients (code, nom, email, telephone)
+VALUES
+    (
+        'CLI001',
+        'Client1709202610h58',
+        'client1@test.com',
+        '0000000001'
+    ),
+    (
+        'CLI002',
+        'ClientXY',
+        'clientxy@test.com',
+        '0000000002'
+    ),
+    (
+        'CLI003',
+        'ClientB',
+        'clientb@test.com',
+        '0000000003'
+    );

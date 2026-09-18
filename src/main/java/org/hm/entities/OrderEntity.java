@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", schema = "event")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,9 +19,6 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String customer;
 
     @Column(length = 500)
     private String description;
@@ -46,4 +43,8 @@ public class OrderEntity {
     )
     @Builder.Default
     private List<OrderItemEntity> items = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private ClientEntity client;
 }

@@ -18,7 +18,7 @@ public class NotificationService {
 
         log.info(
                 "Email envoyé au client {} pour la commande {}",
-                event.customer(),
+                event.clientName(),
                 event.orderId()
         );
 

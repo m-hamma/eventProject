@@ -3,7 +3,7 @@
 ALTER TABLE orders
     ADD COLUMN IF NOT EXISTS client_id BIGINT;
 
--- remplacement progressif de customer par client_id
+-- remplacement progressif de clientName par client_id
 
 -- ALTER TABLE orders
 -- ADD CONSTRAINT fk_order_client

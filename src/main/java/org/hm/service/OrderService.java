@@ -2,12 +2,13 @@ package org.hm.service;
 
 import jakarta.transaction.Transactional;
 import org.hm.dto.OrderDto;
+import org.hm.entities.ClientEntity;
 import org.hm.entities.OrderEntity;
 import org.hm.enums.OrderStatus;
 import org.hm.event.OrderCreatedEvent;
-import org.hm.event.OrderUpdatedEvent;
 import org.hm.exception.InvoiceAttachedException;
 import org.hm.exception.OrderNotFoundException;
+import org.hm.mapper.ClientMapper;
 import org.hm.mapper.OrderMapper;
 import org.hm.repositories.OrderRepository;
 import org.slf4j.Logger;
@@ -29,15 +30,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher publisher;
     private final OrderMapper orderMapper;
+    private final ClientMapper clientMapper;
 
     public OrderService(
             OrderRepository orderRepository,
             ApplicationEventPublisher publisher,
-            OrderMapper orderMapper) {
+            OrderMapper orderMapper, ClientMapper clientMapper) {
 
         this.orderRepository = orderRepository;
         this.publisher = publisher;
         this.orderMapper = orderMapper;
+        this.clientMapper = clientMapper;
     }
 
     public void createOrder(OrderDto order) {
@@ -46,7 +49,7 @@ public class OrderService {
 
         log.info(
                 "Création d'une commande pour le client {}",
-                order.customer()
+                order.client().nom()
         );
 
         OrderEntity entity = orderMapper.toEntity(order);
@@ -68,7 +71,7 @@ public class OrderService {
         publisher.publishEvent(
                 new OrderCreatedEvent(
                         saved.getId(),
-                        saved.getCustomer()
+                        saved.getClient().getNom()
                 )
         );
 
@@ -85,7 +88,10 @@ public class OrderService {
             OrderEntity entity,
             OrderDto order) {
 
-        entity.setCustomer(order.customer());
+        ClientEntity clientEntity =
+                clientMapper.toEntity(order.client());
+
+        entity.setClient(clientEntity);
         entity.setDescription(order.description());
         entity.setUpdatedAt(LocalDateTime.now());
     }
