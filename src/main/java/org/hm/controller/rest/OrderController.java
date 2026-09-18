@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -18,10 +18,6 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "EventProject API is running";
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
