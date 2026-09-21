@@ -1,25 +1,21 @@
 package org.hm.config;
 
+import javax.sql.DataSource;
+
 import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.sql.DataSource;
-
 @Configuration
 public class FlywayConfig {
 
-    @Bean
+    @Bean(initMethod = "migrate")
     public Flyway flyway(DataSource dataSource) {
 
-        Flyway flyway = Flyway.configure()
+        return Flyway.configure()
                 .dataSource(dataSource)
-                .baselineOnMigrate(true)
                 .locations("classpath:db/migration")
+                .baselineOnMigrate(true)
                 .load();
-
-        flyway.migrate();
-
-        return flyway;
     }
 }

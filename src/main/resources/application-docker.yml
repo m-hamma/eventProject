@@ -2,25 +2,30 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    baseline-version: 100
 
   datasource:
-    url: jdbc:postgresql://db:5432/eventdb
+    url: jdbc:postgresql://db:5432/eventdb8
     username: mohamed.hamma
     password: secret
 
   sql:
     init:
-      mode: never # Spring N'EXECUTE PAS schema.sql
+      mode: never
 
   jpa:
+    defer-datasource-initialization: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     show-sql: true
+
+  data:
+    jdbc:
+      repositories:
+        enabled: true
 
 logging:
   level:
-    org.flywaydb: DEBUG
+    org.flywaydb: INFO
 
 server:
   port: 8080

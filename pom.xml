@@ -118,7 +118,7 @@
                 <version>11.14.1</version>
 
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/eventdb</url>
+                    <url>jdbc:postgresql://localhost:5432/eventdb8</url>
                     <user>mohamed.hamma</user>
                     <password>secret</password>
                 </configuration>
