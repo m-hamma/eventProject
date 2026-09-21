@@ -3,6 +3,8 @@ spring:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 100
 
   datasource:
     url: jdbc:postgresql://localhost:5432/eventdb

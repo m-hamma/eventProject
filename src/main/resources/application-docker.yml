@@ -2,6 +2,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    baseline-version: 100
 
   datasource:
     url: jdbc:postgresql://db:5432/eventdb
