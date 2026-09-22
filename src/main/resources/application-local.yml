@@ -6,7 +6,7 @@ spring:
     baseline-on-migrate: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/eventdb8
+    url: jdbc:postgresql://localhost:5432/eventdb7
     username: mohamed.hamma
     password: secret
 
