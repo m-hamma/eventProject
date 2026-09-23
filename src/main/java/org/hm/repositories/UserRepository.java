@@ -1,9 +1,14 @@
 package org.hm.repositories;
 
-import org.hm.entities.ClientEntity;
 import org.hm.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository
-        extends JpaRepository<UserEntity, Long> {
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
+    Optional<UserEntity> findByUserName(String userName);
+
 }

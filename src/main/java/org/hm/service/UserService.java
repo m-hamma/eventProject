@@ -7,6 +7,7 @@ import org.hm.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +28,15 @@ public class UserService {
                 .map(userMapper::toDto)
                 .orElseThrow(() ->
                         new RuntimeException("User not found: " + id));
+    }
+    public Optional<UserDto> findByUserName(String userName) {
+        return userRepository.findByUserName(userName)
+                .map(userMapper::toDto);
+    }
+    public Optional<UserDto> authenticate(String userName, String password) {
+        return userRepository.findByUserName(userName)
+                .filter(user ->
+                        user.getPassword().replace("{noop}", "").equals(password))
+                .map(userMapper::toDto);
     }
 }
