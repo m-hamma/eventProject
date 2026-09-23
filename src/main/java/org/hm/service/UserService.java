@@ -2,6 +2,7 @@ package org.hm.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hm.dto.UserDto;
+import org.hm.exception.BadCredentialsException;
 import org.hm.mapper.UserMapper;
 import org.hm.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class UserService {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found: " + id));
+                        new BadCredentialsException("Identifiants invalides"));
     }
     public Optional<UserDto> findByUserName(String userName) {
         return userRepository.findByUserName(userName)

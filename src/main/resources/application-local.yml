@@ -1,4 +1,20 @@
 debug: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${EXPIRATION}
+
+  pagination:
+    default-page-size: ${PSIZE}
+    max-page-size: ${MAXPSIZE}
+
+  security:
+    max-login-attempts: ${MAXATTEMPTS}
+
+  cache:
+    ttl-minutes: ${TTLMINUTES}
+
 spring:
   flyway:
     enabled: true
@@ -6,14 +22,15 @@ spring:
     baseline-on-migrate: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/eventdb7
-    username: mohamed.hamma
-    password: secret
+    url: ${URLDB}
+    username: ${USERDB}
+    password: ${SECRET}
 
   jpa:
+    pen-in-view: false
     defer-datasource-initialization: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: ${DDLAUTO}
     show-sql: true
 
   data:
