@@ -16,9 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @Transactional
@@ -105,12 +110,11 @@ public class OrderService {
         );
     }
 
-    public List<OrderDto> listOrders() {
-
-        return orderRepository.findAll()
-                .stream()
-                .map(orderMapper::toDto)
-                .toList();
+    public Page<OrderDto> listOrders(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return orderRepository
+                .findAll(pageable)
+                .map(orderMapper::toDto);
     }
 
 

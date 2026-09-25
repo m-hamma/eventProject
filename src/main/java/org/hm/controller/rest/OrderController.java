@@ -1,6 +1,8 @@
 package org.hm.controller.rest;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.hm.dto.OrderDto;
 import org.hm.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -40,10 +42,12 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDto> listerOrders() {
-        return orderService.listOrders();
-    }
+    public Page<OrderDto> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
+        return orderService.listOrders(page, size);
+    }
     @GetMapping({"/ping", "/ping/", "/test"})
     public String ping() {
         return "OK";

@@ -5,9 +5,10 @@ import org.hm.dto.UserDto;
 import org.hm.exception.BadCredentialsException;
 import org.hm.mapper.UserMapper;
 import org.hm.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,11 +18,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<UserDto> findAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+    public Page<UserDto> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(userMapper::toDto);
     }
 
     public UserDto findById(Long id) {

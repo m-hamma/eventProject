@@ -7,10 +7,10 @@ import org.hm.service.ClientService;
 import org.hm.service.ProductService;
 import org.hm.service.RoleService;
 import org.hm.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,18 +56,27 @@ public class ReferentielController {
     }
 
     @GetMapping("/users")
-    public List<UserDto> users() {
-        return userService.findAll();
-    }
+    public Page<UserDto> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
+        Pageable pageable = PageRequest.of(page, size);
+
+        return userService.findAll(pageable);
+    }
     @GetMapping("/users/{id}")
     public UserDto user(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @GetMapping("/roles")
-    public List<RoleDto> roles() {
-        return roleService.findAll();
+    public Page<RoleDto> roles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return roleService.findAll(pageable);
     }
 
     @GetMapping("/roles/{id}")
